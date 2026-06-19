@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login – Give a Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #ef4a53;
+    --rose-light: #2a1620;
+    --rose-dark: #ff8087;
+    --navy: #131a30;
+    --navy-mid: #1f2a4a;
+    --slate: #aab4cc;
+    --muted: #8b96b8;
+    --border: #262e48;
+    --bg: #0a0e1a;
+    --white: #161c2e;
+    --green: #2dd4a0;
+    --green-light: #102a22;
+    --amber: #f5a623;
+    --text: #eef1f8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    min-height: 100vh;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 85% 15%, rgba(232,68,77,0.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 20px; position: relative; z-index: 1;
+  }
+  .back-link {
+    position: absolute; top: 28px; left: 28px;
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--text); }
+
+  .auth-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: 28px; }
+  .auth-logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .auth-logo-text { font-family: 'Playfair Display', serif; font-size: 23px; font-weight: 700; color: var(--text); }
+  .auth-logo-text span { color: #f9a8ad; }
+
+  .auth-wrap { width: 100%; max-width: 420px; }
+  .auth-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 18px; padding: 36px 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  }
+  .auth-card h1 {
+    font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px; text-align: center;
+  }
+  .auth-card .subtitle { font-size: 13.5px; color: var(--muted); text-align: center; margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--slate);
+    margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .phone-input-row { display: flex; gap: 8px; }
+  .phone-prefix {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 12px; border: 1.5px solid var(--border); border-radius: 7px;
+    background: var(--bg); color: var(--text); font-size: 14px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .form-group input {
+    width: 100%; padding: 11px 13px; border: 1.5px solid var(--border);
+    border-radius: 7px; font-size: 14.5px; font-family: inherit;
+    color: var(--text); background: var(--bg); transition: border-color 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .form-group input::placeholder { color: var(--muted); opacity: 0.7; }
+  .form-group input:focus { outline: none; border-color: var(--rose); background: var(--white); }
+
+  .otp-row { display: flex; gap: 8px; justify-content: space-between; margin-bottom: 18px; }
+  .otp-box {
+    width: 46px; height: 54px; text-align: center; font-size: 20px; font-weight: 700;
+    border: 1.5px solid var(--border); border-radius: 9px; background: var(--bg);
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+  }
+  .otp-box:focus { outline: none; border-color: var(--rose); background: var(--white); }
+
+  .otp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 12.5px; }
+  .otp-meta .sent-to { color: var(--muted); }
+  .otp-meta .sent-to b { color: var(--text); }
+  .resend-link { color: var(--rose); cursor: pointer; font-weight: 600; background: none; border: none; font-family: inherit; font-size: 12.5px; padding: 0; }
+  .resend-link:disabled { color: var(--muted); cursor: default; }
+
+  .btn-primary {
+    width: 100%; background: var(--rose); color: #fff; border: none;
+    padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px;
+    cursor: pointer; font-family: inherit; transition: all 0.2s;
+    box-shadow: 0 4px 18px rgba(239,74,83,0.3);
+  }
+  .btn-primary:hover { background: var(--rose-dark); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+  .btn-text {
+    width: 100%; background: none; border: none; color: var(--muted);
+    font-size: 13px; padding: 12px 0 0; cursor: pointer; font-family: inherit;
+  }
+  .btn-text:hover { color: var(--text); }
+
+  .error-box {
+    display: none; background: var(--rose-light); border-left: 3px solid var(--rose);
+    color: #ff9a9f; font-size: 13px; padding: 11px 14px; border-radius: 0 7px 7px 0;
+    margin-bottom: 16px;
+  }
+  .error-box a { color: #ff9a9f; font-weight: 700; text-decoration: underline; }
+
+  .demo-note {
+    background: var(--green-light); border: 1px dashed var(--green);
+    border-radius: 9px; padding: 12px 14px; margin-bottom: 18px;
+    font-size: 12.5px; color: var(--text); display: none;
+  }
+  .demo-note b { color: var(--green); letter-spacing: 2px; font-size: 15px; }
+
+  .divider { text-align: center; margin: 0 0 16px; font-size: 11px; color: var(--muted); position: relative; }
+
+  .switch-row { text-align: center; margin-top: 22px; font-size: 13.5px; color: var(--muted); }
+  .switch-row a { color: var(--rose); font-weight: 600; text-decoration: none; }
+  .switch-row a:hover { text-decoration: underline; }
+
+  .success-state { display: none; text-align: center; }
+  .success-state .ico { font-size: 50px; display: block; margin-bottom: 14px; }
+  .success-state h2 { font-family: 'Playfair Display', serif; font-size: 21px; color: var(--text); margin-bottom: 8px; }
+  .success-state p { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .footnote { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 22px; opacity: 0.8; }
+</style>
+</head>
+<body>
+<div class="page">
+  <a href="GiveLife - Home Page.html" class="auth-logo">
+    <div class="auth-logo-icon">🫀</div>
+    <div class="auth-logo-text">Give a <span>Life</span></div>
+  </a>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <!-- STEP 1: PHONE NUMBER -->
+      <div class="step active" id="step1">
+        <h1>Login</h1>
+        <div class="error-box" id="phoneError"></div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="phone-input-row">
+            <div class="phone-prefix">🇮🇳 +91</div>
+            <input type="tel" id="loginPhone" placeholder="98765 43210" maxlength="10" inputmode="numeric">
+          </div>
+        </div>
+        <button class="btn-primary" onclick="sendLoginOtp()">Send OTP →</button>
+      </div>
+      <!-- STEP 2: OTP -->
+      <div class="step" id="step2">
+        <h1>Verification</h1>
+        <p class="subtitle">Enter the 6-digit code sent to your phone</p>
+
+        <div class="error-box" id="otpError"></div>
+        <div class="demo-note" id="demoNote">Your OTP is <b id="demoOtpVal"></b></div>
+
+        <div class="otp-meta">
+          <span class="sent-to">Code sent to <b id="sentToPhone"></b></span>
+        </div>
+
+        <div class="otp-row">
+          <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+          <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+          <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+          <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+          <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+          <input type="text" maxlength="1" class="otp-box" inputmode="numeric">
+        </div>
+
+        <button class="btn-primary" onclick="verifyLoginOtp()">Log In</button>
+        <button class="btn-text" onclick="goToStep(1)">← Change phone number</button>
+        <p class="footnote" id="resendNote">Didn't get a code? <button class="resend-link" id="resendBtn" disabled onclick="resendLoginOtp()">Resend in 30s</button></p>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-state" id="successStep">
+        <span class="ico">✅</span>
+        <h2>Logged in successfully</h2>
+        <p id="successMsg">Redirecting you to the home page…</p>
+        <button class="btn-primary" onclick="location.href='GiveLife - Home Page.html'">Continue to Home Page</button>
+      </div>
+
+    </div>
+    <p class="footnote">By continuing you agree to NOTTO's Terms of Use and Privacy Policy.</p>
+  </div>
+</div>
+
+<script>
+  let currentPhone = '';
+  let currentOtp = '';
+  let resendTimer = null;
+
+  function showError(boxId, html) {
+    const box = document.getElementById(boxId);
+    box.innerHTML = html;
+    box.style.display = 'block';
+  }
+  function hideError(boxId) {
+    document.getElementById(boxId).style.display = 'none';
+  }
+
+  function goToStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+    hideError('phoneError'); hideError('otpError');
+  }
+
+  function generateOtp() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+  }
+
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('givelifeUsers') || '{}');
+  }
+
+  function sendLoginOtp() {
+    const phone = document.getElementById('loginPhone').value.trim();
+    hideError('phoneError');
+
+    currentPhone = phone;
+    currentOtp = generateOtp();
+    document.getElementById('sentToPhone').textContent = '+91 ' + phone;
+    document.getElementById('demoOtpVal').textContent = currentOtp;
+    document.getElementById('demoNote').style.display = 'block';
+
+    goToStep(2);
+    clearOtpBoxes();
+    startResendTimer();
+  }
+
+  function resendLoginOtp() {
+    currentOtp = generateOtp();
+    document.getElementById('demoOtpVal').textContent = currentOtp;
+    clearOtpBoxes();
+    startResendTimer();
+  }
+
+  function startResendTimer() {
+    let seconds = 30;
+    const btn = document.getElementById('resendBtn');
+    btn.disabled = true;
+    btn.textContent = 'Resend in ' + seconds + 's';
+    clearInterval(resendTimer);
+    resendTimer = setInterval(() => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(resendTimer);
+        btn.disabled = false;
+        btn.textContent = 'Resend OTP';
+      } else {
+        btn.textContent = 'Resend in ' + seconds + 's';
+      }
+    }, 1000);
+  }
+
+  function clearOtpBoxes() {
+    const boxes = document.querySelectorAll('.otp-box');
+    boxes.forEach(b => b.value = '');
+    boxes[0].focus();
+  }
+
+  // OTP box auto-advance behaviour
+  document.querySelectorAll('.otp-box').forEach((box, idx, all) => {
+    box.addEventListener('input', () => {
+      box.value = box.value.replace(/\D/g, '').slice(0, 1);
+      if (box.value && idx < all.length - 1) all[idx + 1].focus();
+    });
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !box.value && idx > 0) all[idx - 1].focus();
+    });
+    box.addEventListener('paste', (e) => {
+      const data = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+      if (data.length) {
+        e.preventDefault();
+        [...data].slice(0, all.length).forEach((d, i) => { all[i].value = d; });
+        all[Math.min(data.length, all.length) - 1].focus();
+      }
+    });
+  });
+
+  function verifyLoginOtp() {
+    const entered = [...document.querySelectorAll('.otp-box')].map(b => b.value).join('');
+    hideError('otpError');
+
+    if (entered.length !== 6) {
+      showError('otpError', 'Please enter the complete 6-digit OTP.');
+      return;
+    }
+    if (entered !== currentOtp) {
+      showError('otpError', 'Incorrect OTP. Please try again.');
+      return;
+    }
+
+    const users = getUsers();
+    const user = users[currentPhone];
+    const firstName = user ? user.firstName : 'Donor';
+
+    localStorage.setItem('givelifeSession', JSON.stringify({ phone: currentPhone, firstName: firstName }));
+
+    document.getElementById('successMsg').textContent = 'Welcome back, ' + firstName + '! Redirecting you to the home page…';
+    document.querySelector('.auth-card .step.active').classList.remove('active');
+    document.getElementById('successStep').style.display = 'block';
+
+    setTimeout(() => { location.href = 'GiveLife - Home Page.html'; }, 1800);
+  }
+
+  document.getElementById('loginPhone').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendLoginOtp();
+  });
+</script>
+</body>
+</html>

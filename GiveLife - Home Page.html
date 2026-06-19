@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Give a Life – Organ Donation Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #ef4a53;
+    --rose-light: #2a1620;
+    --rose-dark: #ff8087;
+    --navy: #131a30;
+    --navy-mid: #1f2a4a;
+    --slate: #aab4cc;
+    --muted: #8b96b8;
+    --border: #262e48;
+    --bg: #0a0e1a;
+    --white: #161c2e;
+    --green: #2dd4a0;
+    --green-light: #102a22;
+    --amber: #f5a623;
+    --text: #eef1f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+  }
+  .header-inner {
+    max-width: 1160px; margin: 0 auto;
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); }
+  .logo-text span { color: var(--rose); }
+
+  .main-nav { display: flex; align-items: center; gap: 6px; }
+  .main-nav a {
+    padding: 8px 14px; border-radius: 6px;
+    font-size: 14px; font-weight: 500; color: var(--slate);
+    text-decoration: none; transition: all 0.15s;
+  }
+  .main-nav a:hover { background: var(--bg); color: var(--text); }
+  .nav-auth { display: flex; align-items: center; gap: 8px; margin-left: 16px; }
+  .nav-btn { font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 7px; text-decoration: none; font-family: inherit; transition: all 0.2s; cursor: pointer; }
+  .nav-btn-login { color: var(--text); border: 1.5px solid var(--border); background: transparent; }
+  .nav-btn-login:hover { border-color: var(--rose); color: var(--rose); background: transparent; }
+  .nav-btn-signup { background: var(--rose); color: #fff; border: 1.5px solid var(--rose); box-shadow: 0 3px 12px rgba(239,74,83,0.3); }
+  .nav-btn-signup:hover { background: var(--rose-dark); border-color: var(--rose-dark); transform: translateY(-1px); }
+  .nav-user { display: flex; align-items: center; gap: 10px; }
+
+  .header-cta {
+    background: var(--rose);
+    color: var(--text); font-weight: 600; font-size: 14px;
+    padding: 10px 22px; border-radius: 8px;
+    text-decoration: none; transition: all 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .header-cta:hover { background: var(--rose-dark); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 80px 24px 90px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(232,68,77,0.15) 0%, transparent 70%);
+  }
+  .hero-inner {
+    max-width: 1160px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,68,77,0.2); border: 1px solid rgba(232,68,77,0.3);
+    color: #f9a8ad; font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    padding: 5px 14px; border-radius: 20px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px; font-weight: 700; color: var(--text);
+    line-height: 1.15; margin-bottom: 18px;
+  }
+  .hero h1 em { color: #f9a8ad; font-style: normal; }
+  .hero p {
+    font-size: 17px; color: #8da0c0; line-height: 1.75;
+    max-width: 480px; margin-bottom: 32px;
+  }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-rose {
+    background: var(--rose); color: #fff; font-weight: 600; font-size: 15px;
+    padding: 14px 28px; border-radius: 8px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s; box-shadow: 0 4px 20px rgba(232,68,77,0.35);
+  }
+  .btn-rose:hover { background: var(--rose-dark); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent; color: #8da0c0; font-weight: 500; font-size: 15px;
+    padding: 14px 28px; border-radius: 8px; text-decoration: none;
+    border: 1.5px solid rgba(255,255,255,0.2); transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+  /* Hero Stats Card */
+  .hero-stats {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px; padding: 28px;
+    backdrop-filter: blur(12px);
+  }
+  .hero-stats h3 {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 20px;
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-tile {
+    background: rgba(255,255,255,0.07); border-radius: 10px;
+    padding: 16px; text-align: center;
+  }
+  .stat-tile .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: var(--text); line-height: 1;
+  }
+  .stat-tile .val.accent { color: #f9a8ad; }
+  .stat-tile .val.green { color: #6ee7b7; }
+  .stat-tile .lbl { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 5px; }
+  .hotline-pill {
+    margin-top: 16px; background: rgba(232,68,77,0.2);
+    border: 1px solid rgba(232,68,77,0.25); border-radius: 8px;
+    padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .hotline-pill .icon { font-size: 16px; }
+  .hotline-pill .txt { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .hotline-pill .num { font-size: 14px; font-weight: 700; color: var(--text); }
+
+  /* ── SERVICES ── */
+  .services { padding: 60px 24px; background: var(--bg); }
+  .section-inner { max-width: 1160px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 40px; }
+  .section-tag {
+    display: inline-block;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--rose); font-weight: 600; margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px; font-weight: 700; color: var(--text);
+  }
+  .services-row {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px;
+  }
+  .svc-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 12px; text-align: center;
+    text-decoration: none; color: var(--text); cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  }
+  .svc-card:hover {
+    border-color: var(--rose); transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(232,68,77,0.12);
+  }
+  .svc-card .ico { font-size: 34px; display: block; margin-bottom: 10px; }
+  .svc-card .lbl { font-size: 12.5px; font-weight: 600; color: var(--slate); line-height: 1.3; }
+
+  /* ── ORGANS ── */
+  .organs { padding: 60px 24px; background: var(--white); }
+  .organs-intro { color: var(--muted); font-size: 15px; max-width: 540px; margin: 0 auto 32px; text-align: center; }
+  .organs-legend { display: flex; justify-content: center; gap: 16px; margin-bottom: 20px; }
+  .organs-legend span {
+    font-size: 12px; font-weight: 600; padding: 4px 14px;
+    border-radius: 20px;
+  }
+  .lbl-vital { background: var(--rose-light); color: var(--rose); }
+  .lbl-tissue { background: var(--green-light); color: var(--green); }
+  .organs-grid {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px;
+  }
+  .organ-card {
+    background: var(--bg); border-radius: 12px; padding: 18px 10px;
+    text-align: center; border: 1.5px solid var(--border);
+    transition: all 0.2s; cursor: default;
+  }
+  .organ-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+  .organ-card.vital { border-top: 3px solid var(--rose); }
+  .organ-card.tissue { border-top: 3px solid var(--green); }
+  .organ-card .ico { font-size: 28px; display: block; margin-bottom: 8px; }
+  .organ-card .name { font-size: 12px; font-weight: 700; color: var(--text); }
+  .organ-card .type { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+  /* ── STATS ── */
+  .stats { background: var(--navy); padding: 60px 24px; }
+  .stats-inner { max-width: 1160px; margin: 0 auto; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .stats-item { text-align: center; padding: 20px; border-right: 1px solid rgba(255,255,255,0.08); }
+  .stats-item:last-child { border-right: none; }
+  .stats-item .big {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px; font-weight: 700; color: #f9a8ad; line-height: 1;
+  }
+  .stats-item .lbl { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 8px; }
+
+  /* ── HOW IT WORKS ── */
+  .how { padding: 70px 24px; background: var(--bg); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; margin-top: 40px; }
+  .steps::before {
+    content: '';
+    position: absolute; top: 36px; left: 12%; right: 12%; height: 1px;
+    background: linear-gradient(90deg, var(--rose), rgba(232,68,77,0.2));
+  }
+  .step { text-align: center; padding: 24px 16px; position: relative; z-index: 1; }
+  .step-num {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--white); border: 2px solid var(--rose);
+    color: var(--rose); font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(232,68,77,0.15);
+  }
+  .step h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ── REGISTRATION FORM ── */
+  .pledge-section {
+    padding: 70px 24px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+  }
+  .pledge-grid {
+    max-width: 1160px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 540px; gap: 60px; align-items: start;
+  }
+  .pledge-info h2 {
+    font-family: 'Playfair Display', serif; font-size: 36px; color: var(--text); margin-bottom: 16px;
+  }
+  .pledge-info p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+  .pledge-points { list-style: none; }
+  .pledge-points li {
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-bottom: 12px; font-size: 14px; color: var(--slate);
+  }
+  .pledge-points li::before {
+    content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    width: 20px; height: 20px; background: var(--green-light); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 11px;
+  }
+  .help-box {
+    margin-top: 28px; padding: 18px; background: var(--rose-light);
+    border-left: 3px solid var(--rose); border-radius: 0 8px 8px 0;
+  }
+  .help-box strong { font-size: 13px; color: var(--rose-dark); display: block; margin-bottom: 4px; }
+  .help-box span { font-size: 13px; color: var(--muted); }
+
+  /* Form */
+  .form-box {
+    background: var(--white); border-radius: 16px; padding: 36px;
+    box-shadow: 0 4px 40px rgba(26,35,64,0.10);
+    border: 1px solid var(--border);
+  }
+  .form-box h3 {
+    font-family: 'Playfair Display', serif; font-size: 22px; color: var(--text);
+    margin-bottom: 6px;
+  }
+  .form-box .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  .form-section-label {
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--rose); font-weight: 600; margin: 20px 0 12px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--slate);
+    margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .form-group label .req { color: var(--rose); margin-left: 2px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+    border-radius: 7px; font-size: 14px; font-family: inherit;
+    color: var(--text); background: var(--bg); transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: none; border-color: var(--rose); background: var(--white);
+  }
+
+  .blood-group-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  .blood-btn {
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 7px; padding: 8px 4px; text-align: center;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s; color: var(--slate);
+  }
+  .blood-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .blood-btn.selected { background: var(--rose); border-color: var(--rose); color: var(--text); }
+
+  .organs-check { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; color: var(--slate); }
+  .check-item input[type=checkbox] { accent-color: var(--rose); width: 15px; height: 15px; }
+
+  .consent-row {
+    margin-top: 14px; padding: 14px; background: var(--bg); border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .submit-btn {
+    width: 100%; background: var(--rose);
+    color: #fff; border: none; padding: 14px; font-size: 15px; font-weight: 600;
+    border-radius: 8px; cursor: pointer; font-family: inherit;
+    transition: all 0.2s; margin-top: 16px;
+    box-shadow: 0 4px 16px rgba(232,68,77,0.3);
+  }
+  .submit-btn:hover { background: var(--rose-dark); transform: translateY(-1px); }
+  .form-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy); color: rgba(255,255,255,0.5); padding-top: 52px; }
+  .footer-grid {
+    max-width: 1160px; margin: 0 auto; padding: 0 24px 44px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  }
+  .footer-brand .logo { margin-bottom: 14px; }
+  .footer-brand .logo-text { color: var(--text); }
+  .footer-brand p { font-size: 13px; line-height: 1.7; }
+  .footer-col h5 { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 9px; }
+  .footer-col ul li a {
+    color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; transition: color 0.15s;
+  }
+  .footer-col ul li a:hover { color: rgba(255,255,255,0.85); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 18px 24px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.25);
+  }
+  .social-links { display: flex; gap: 10px; margin-top: 18px; }
+  .social-links a {
+    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5);
+    padding: 6px 14px; border-radius: 6px; font-size: 12px; text-decoration: none;
+    transition: all 0.15s;
+  }
+  .social-links a:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 16px; max-width: 480px; width: 90%;
+    padding: 40px; position: relative; box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+    animation: modalIn 0.3s ease; text-align: center;
+  }
+  @keyframes modalIn { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);
+  }
+  .modal .success-ico { font-size: 56px; display: block; margin-bottom: 16px; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--text); margin-bottom: 10px; }
+  .modal p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-stats { display: none; }
+    .hero h1 { font-size: 36px; }
+    .services-row { grid-template-columns: repeat(3, 1fr); }
+    .organs-grid { grid-template-columns: repeat(4, 1fr); }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .pledge-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .main-nav { display: none; }
+  }
+  @media (max-width: 600px) {
+    .services-row { grid-template-columns: repeat(2, 1fr); }
+    .organs-grid { grid-template-columns: repeat(3, 1fr); }
+    .footer-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">🫀</div>
+      <div class="logo-text">Give a <span>Life</span></div>
+    </a>
+    <nav class="main-nav">
+      <a href="#hero">Home</a>
+      <a href="#" onclick="openModal('aboutModal'); return false;">About</a>
+      <a href="#organs">Organ Donation</a>
+      <a href="#" onclick="openModal('hospitalModal'); return false;">For Hospitals</a>
+      <a href="#" onclick="openModal('registryModal'); return false;">Registry</a>
+      <a href="#" onclick="openModal('contactModal'); return false;">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">🇮🇳 National Organ Donation Portal</div>
+      <h1>One Life Can Save<br><em>Eight Lives.</em></h1>
+      <p>Pledge your organs and join millions of Indians who have chosen to give the gift of life. A simple decision can bring hope to families waiting for a second chance.</p>
+      <div class="hero-btns">
+        <a href="#pledge" class="btn-rose">🫀 Pledge to Donate</a>
+        <a href="#" class="btn-ghost" onclick="openDonorCardDownload(); return false;">Download Donor Card</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <h3>National Dashboard</h3>
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <div class="val accent">18,900<span style="font-size:16px">+</span></div>
+          <div class="lbl">Transplants in 2024</div>
+        </div>
+        <div class="stat-tile">
+          <div class="val green">1,068</div>
+          <div class="lbl">Deceased Donors</div>
+        </div>
+        <div class="stat-tile">
+          <div class="val">7M<span style="font-size:16px">+</span></div>
+          <div class="lbl">Pledges Registered</div>
+        </div>
+        <div class="stat-tile">
+          <div class="val accent">3rd</div>
+          <div class="lbl">Global Rank</div>
+        </div>
+      </div>
+      <div class="hotline-pill">
+        <span class="icon">📞</span>
+        <div>
+          <div class="txt">24×7 Helpline</div>
+          <div class="num">1800-11-4770</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK SERVICES -->
+<section class="services">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">What we offer</div>
+      <h2>Our Services</h2>
+    </div>
+    <div class="services-row">
+      <a class="svc-card" href="#pledge">
+        <span class="ico">🫀</span>
+        <div class="lbl">Pledge to Donate</div>
+      </a>
+      <a class="svc-card" href="#" onclick="openDonorCardDownload(); return false;">
+        <span class="ico">🃏</span>
+        <div class="lbl">Download Donor Card</div>
+      </a>
+      <a class="svc-card" href="#" onclick="openModal('hospitalModal'); return false;">
+        <span class="ico">🏥</span>
+        <div class="lbl">Hospital Registration</div>
+      </a>
+      <a class="svc-card" href="#" onclick="openModal('waitlistModal'); return false;">
+        <span class="ico">📋</span>
+        <div class="lbl">Recipient Waitlist</div>
+      </a>
+      <a class="svc-card" href="#" onclick="openModal('registryModal'); return false;">
+        <span class="ico">📊</span>
+        <div class="lbl">Transplant Registry</div>
+      </a>
+      <a class="svc-card" href="#" onclick="openModal('brainDeathModal'); return false;">
+        <span class="ico">🚨</span>
+        <div class="lbl">Report Brain Death</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ORGANS -->
+<section class="organs" id="organs">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">What you can donate</div>
+      <h2>Organs & Tissues</h2>
+    </div>
+    <p class="organs-intro">One person can donate up to 37 different organs and tissues — giving the gift of life to multiple recipients.</p>
+    <div class="organs-legend">
+      <span class="lbl-vital">● Vital Organs</span>
+      <span class="lbl-tissue">● Tissues</span>
+    </div>
+    <div class="organs-grid">
+      <div class="organ-card vital"><span class="ico">🫁</span><div class="name">Lungs</div><div class="type">Vital Organ</div></div>
+      <div class="organ-card vital"><span class="ico">❤️</span><div class="name">Heart</div><div class="type">Vital Organ</div></div>
+      <div class="organ-card vital"><span class="ico">🫘</span><div class="name">Kidneys</div><div class="type">Vital Organ</div></div>
+      <div class="organ-card vital"><span class="ico">🟫</span><div class="name">Liver</div><div class="type">Vital Organ</div></div>
+      <div class="organ-card vital"><span class="ico">🔵</span><div class="name">Pancreas</div><div class="type">Vital Organ</div></div>
+      <div class="organ-card vital"><span class="ico">🌀</span><div class="name">Intestine</div><div class="type">Vital Organ</div></div>
+      <div class="organ-card tissue"><span class="ico">👁️</span><div class="name">Corneas</div><div class="type">Tissue</div></div>
+      <div class="organ-card tissue"><span class="ico">🦴</span><div class="name">Bone & Skin</div><div class="type">Tissue</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stats-row">
+      <div class="stats-item">
+        <div class="big">18,900+</div>
+        <div class="lbl">Organ Transplants in 2024 — Highest Ever</div>
+      </div>
+      <div class="stats-item">
+        <div class="big">7M+</div>
+        <div class="lbl">Registered Organ Donation Pledges</div>
+      </div>
+      <div class="stats-item">
+        <div class="big">1,068</div>
+        <div class="lbl">Deceased Donors in 2023</div>
+      </div>
+      <div class="stats-item">
+        <div class="big">3rd</div>
+        <div class="lbl">India's Global Rank in Transplants</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Simple process</div>
+      <h2>How to Pledge</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Register Online</h4>
+        <p>Fill the pledge form with your personal details, Aadhaar number, and preferred organs.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Select Organs</h4>
+        <p>Choose which organs and tissues you wish to donate — all or specific ones.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Inform Your Family</h4>
+        <p>Share your decision with close family members — their awareness is vital.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Get Donor Card</h4>
+        <p>Receive your official Donor Card digitally. Keep it accessible and carry it with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLEDGE / REGISTRATION FORM -->
+<section class="pledge-section" id="pledge">
+  <div class="pledge-grid">
+    <div class="pledge-info">
+      <h2>Pledge to Donate<br>Register Now</h2>
+      <p>Registering as an organ donor is a powerful act of compassion. Your pledge is recorded in the National Donor Registry and you may modify or withdraw at any time.</p>
+      <ul class="pledge-points">
+        <li>Secure Aadhaar-linked digital registration</li>
+        <li>Donate all organs or choose specific ones</li>
+        <li>Immediate digital donor card upon registration</li>
+        <li>Pledge can be updated or cancelled anytime</li>
+        <li>Your identity and data protected under IT Act</li>
+        <li>Family notification supported through the portal</li>
+      </ul>
+      <div class="help-box">
+        <strong>📞 Need Help?</strong>
+        <span>Call our toll-free helpline <strong>1800-11-4770</strong> (24×7) or visit your nearest SOTTO centre.</span>
+      </div>
+    </div>
+
+    <div class="form-box">
+      <h3>🫀 Organ Donation Pledge</h3>
+      <p class="subtitle">Governed by THOTA 1994 · National Donor Registry</p>
+
+      <!-- Personal Details -->
+      <div class="form-section-label">Personal Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="firstName" placeholder="Enter first name">
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" id="lastName" placeholder="Enter last name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob">
+        </div>
+        <div class="form-group">
+          <label>Gender <span class="req">*</span></label>
+          <select id="gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Blood Group -->
+      <div class="form-section-label">Blood Group <span style="color:var(--rose)">*</span></div>
+      <div class="blood-group-grid" id="bloodGroupGrid">
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">A+</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">A−</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">B+</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">B−</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">O+</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">O−</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">AB+</button>
+        <button type="button" class="blood-btn" onclick="selectBlood(this)">AB−</button>
+      </div>
+
+      <!-- Contact -->
+      <div class="form-section-label">Contact Information</div>
+      <div class="form-group">
+        <label>Aadhaar Number <span class="req">*</span></label>
+        <input type="text" id="aadhaar" placeholder="XXXX-XXXX-XXXX" maxlength="14">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Mobile Number <span class="req">*</span></label>
+          <input type="tel" id="mobile" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="example@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>State <span class="req">*</span></label>
+        <select id="state">
+          <option value="">Select State</option>
+          <option>Andhra Pradesh</option><option>Delhi</option><option>Gujarat</option>
+          <option>Karnataka</option><option>Maharashtra</option><option>Tamil Nadu</option>
+          <option>Telangana</option><option>Uttar Pradesh</option><option>West Bengal</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Organs -->
+      <div class="form-section-label">Organs I Wish to Donate <span style="color:var(--rose)">*</span></div>
+      <div class="organs-check">
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Heart"> Heart</label>
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Kidneys"> Kidneys</label>
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Lungs"> Lungs</label>
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Liver"> Liver</label>
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Corneas"> Corneas</label>
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Pancreas"> Pancreas</label>
+        <label class="check-item"><input type="checkbox" class="org-individual" value="Skin & Bone"> Skin & Bone</label>
+      </div>
+
+      <!-- Consent -->
+      <div class="consent-row">
+        <label class="check-item" style="font-size:12.5px;color:var(--muted);">
+          <input type="checkbox" id="consentBox">
+          I have informed my family of my decision and consent to my information being recorded in the National Donor Registry under THOTA 1994.
+        </label>
+      </div>
+
+      <div id="formError" style="display:none;color:var(--rose);font-size:13px;margin-top:10px;padding:10px 14px;background:#fdf2f3;border-radius:7px;border-left:3px solid var(--rose);"></div>
+
+      <button class="submit-btn" onclick="submitPledge()">Submit Pledge & Register →</button>
+      <p class="form-note">🔒 Your data is encrypted and protected under the IT Act, 2000.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="margin-bottom: 14px; display: inline-flex;">
+        <div class="logo-icon">🫀</div>
+        <div class="logo-text" style="color:#fff;">Give a <span>Life</span></div>
+      </a>
+      <p>India's organ donation registry under NOTTO, Directorate General of Health Services, Ministry of Health & Family Welfare, Government of India.</p>
+      <div class="social-links">
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Important Links</h5>
+      <ul>
+        <li><a href="#">Ministry of Health & FW</a></li>
+        <li><a href="#">DGHS India</a></li>
+        <li><a href="#">Ayushman Bharat</a></li>
+        <li><a href="#">National Health Portal</a></li>
+        <li><a href="#">India.gov.in</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="#">Annual Reports</a></li>
+        <li><a href="#">THOTA Act 1994</a></li>
+        <li><a href="#">Policy Guidelines</a></li>
+        <li><a href="#">Awareness Materials</a></li>
+        <li><a href="#">Tender Notices</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact NOTTO</h5>
+      <ul>
+        <li><a href="#">AIIMS, New Delhi – 110029</a></li>
+        <li><a href="#">📞 1800-11-4770 (Toll Free)</a></li>
+        <li><a href="#">notto@mohfw.gov.in</a></li>
+        <li><a href="#">Feedback / Grievance</a></li>
+        <li><a href="#">Locate State SOTTO</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Ministry of Health & Family Welfare, Government of India. All Rights Reserved. &nbsp;·&nbsp; Privacy Policy &nbsp;·&nbsp; Terms of Use &nbsp;·&nbsp; Accessibility
+  </div>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('successModal')">✕</button>
+    <span class="success-ico">🫀</span>
+    <h3>Pledge Registered!</h3>
+    <p>Thank you, <strong id="successName"></strong>. Your organ donation pledge has been recorded in the National Donor Registry (NOTTO).</p>
+    <p><strong>Pledge ID:</strong> NOTTO-2025-<span id="pledgeId"></span></p>
+    <p style="font-size:13px;color:#aaa;">Your Donor Card is ready to download below. Please inform your family of your decision — their awareness is crucial.</p>
+    <p style="font-size:12px;color:#aaa;">Helpline: <strong>1800-11-4770</strong> | Available 24×7</p>
+    <button class="submit-btn" onclick="downloadDonorCard()">⬇ Download Donor Card</button>
+    <p style="font-size:11px;color:#bbb;margin-top:8px;">Opens as a printable card. Press Ctrl+P / Cmd+P to print.</p>
+  </div>
+</div>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal" style="max-width:580px;text-align:left;">
+    <button class="modal-close" onclick="closeModal('aboutModal')">✕</button>
+    <span class="success-ico" style="font-size:40px;">🏥</span>
+    <h3 style="text-align:center;">About Give a Life</h3>
+    <p><strong>Give a Life</strong> is India's National Organ & Tissue Transplant Organisation (NOTTO) digital portal, operating under the Directorate General of Health Services, Ministry of Health & Family Welfare, Government of India.</p>
+    <p>We facilitate organ donation pledges, deceased donor coordination, and transplant registry management across all states and union territories under the <strong>Transplantation of Human Organs and Tissues Act (THOTA), 1994</strong>.</p>
+    <div style="background:var(--bg);border-radius:10px;padding:16px;margin:12px 0;">
+      <p style="margin:0 0 8px;font-weight:600;color:var(--navy);font-size:14px;">Our Mission</p>
+      <p style="margin:0;font-size:13px;">To bridge the gap between organ donors and recipients, reduce waitlist mortality, and build a culture of voluntary organ donation across India.</p>
+    </div>
+    <p style="font-size:13px;"><strong>Address:</strong> AIIMS New Delhi, Ansari Nagar, New Delhi – 110029<br><strong>Helpline:</strong> 1800-11-4770 (Toll Free, 24×7)<br><strong>Email:</strong> notto@mohfw.gov.in</p>
+    <button class="submit-btn" onclick="closeModal('aboutModal')">Close</button>
+  </div>
+</div>
+
+<!-- DONOR CARD DOWNLOAD MODAL (for non-registered users) -->
+<div class="modal-overlay" id="downloadCardModal">
+  <div class="modal" style="max-width:500px;">
+    <button class="modal-close" onclick="closeModal('downloadCardModal')">✕</button>
+
+    <!-- STEP 1: Enter Pledge ID -->
+    <div id="lookupStep1">
+      <span class="success-ico">🃏</span>
+      <h3>Download Donor Card</h3>
+      <p>Enter your registered Pledge ID to download your Donor Card.</p>
+      <div class="form-group" style="text-align:left;">
+        <label style="font-size:12px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;">Pledge ID</label>
+        <input type="text" id="lookupPledgeId" placeholder="e.g. NOTTO-2025-123456" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:14px;font-family:inherit;color:var(--navy);background:var(--bg);">
+      </div>
+      <div id="lookupError" style="display:none;color:var(--rose);font-size:13px;margin-bottom:8px;text-align:left;"></div>
+      <button class="submit-btn" onclick="lookupAndDownload()">Fetch & Download Card</button>
+      <p style="font-size:12px;color:#aaa;margin-top:10px;">Don't have a Pledge ID? <a href="#pledge" onclick="closeModal('downloadCardModal')" style="color:var(--rose);">Register first →</a></p>
+    </div>
+
+    <!-- STEP 2: Recovery form shown when ID not found in storage -->
+    <div id="lookupStep2" style="display:none;text-align:left;">
+      <h3 style="text-align:center;margin-bottom:6px;">Restore Your Details</h3>
+      <p style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px;">Your Pledge ID <strong id="recoveryPledgeIdDisplay"></strong> was found but your details aren't stored on this browser. Re-enter them once to restore your card.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">First Name <span style="color:var(--rose)">*</span></label>
+          <input type="text" id="recFirstName" placeholder="First name" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Last Name <span style="color:var(--rose)">*</span></label>
+          <input type="text" id="recLastName" placeholder="Last name" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Date of Birth <span style="color:var(--rose)">*</span></label>
+          <input type="date" id="recDob" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Gender <span style="color:var(--rose)">*</span></label>
+          <select id="recGender" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+            <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Blood Group <span style="color:var(--rose)">*</span></label>
+          <select id="recBlood" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+            <option value="">Select</option><option>A+</option><option>A−</option><option>B+</option><option>B−</option><option>O+</option><option>O−</option><option>AB+</option><option>AB−</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">State <span style="color:var(--rose)">*</span></label>
+          <select id="recState" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+            <option value="">Select</option><option>Andhra Pradesh</option><option>Delhi</option><option>Gujarat</option><option>Karnataka</option><option>Maharashtra</option><option>Tamil Nadu</option><option>Telangana</option><option>Uttar Pradesh</option><option>West Bengal</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Mobile Number <span style="color:var(--rose)">*</span></label>
+        <input type="tel" id="recMobile" placeholder="+91 XXXXX XXXXX" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;color:var(--navy);background:var(--bg);">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Organs Pledged <span style="color:var(--rose)">*</span></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px;">
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Heart" style="accent-color:var(--rose);width:14px;height:14px;"> Heart</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Kidneys" style="accent-color:var(--rose);width:14px;height:14px;"> Kidneys</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Lungs" style="accent-color:var(--rose);width:14px;height:14px;"> Lungs</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Liver" style="accent-color:var(--rose);width:14px;height:14px;"> Liver</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Corneas" style="accent-color:var(--rose);width:14px;height:14px;"> Corneas</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Pancreas" style="accent-color:var(--rose);width:14px;height:14px;"> Pancreas</label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--slate);cursor:pointer;"><input type="checkbox" class="rec-organ" value="Skin & Bone" style="accent-color:var(--rose);width:14px;height:14px;"> Skin & Bone</label>
+        </div>
+      </div>
+      <div id="recoveryError" style="display:none;color:var(--rose);font-size:13px;margin-bottom:8px;"></div>
+      <button class="submit-btn" onclick="restoreAndDownload()">Save & Download Card</button>
+      <button onclick="document.getElementById('lookupStep1').style.display='';document.getElementById('lookupStep2').style.display='none';" style="width:100%;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;margin-top:10px;">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOSPITAL MODAL -->
+<div class="modal-overlay" id="hospitalModal">
+  <div class="modal" style="max-width:540px;text-align:left;">
+    <button class="modal-close" onclick="closeModal('hospitalModal')">✕</button>
+    <span class="success-ico" style="font-size:40px;">🏥</span>
+    <h3 style="text-align:center;">Hospital Registration</h3>
+    <p>Hospitals and transplant centres must be registered with NOTTO to perform organ transplants under THOTA 1994.</p>
+    <div style="background:var(--bg);border-radius:10px;padding:16px;margin:12px 0;">
+      <p style="font-weight:600;color:var(--navy);font-size:13px;margin-bottom:8px;">Required for Registration:</p>
+      <ul style="list-style:none;padding:0;">
+        <li style="font-size:13px;color:var(--slate);margin-bottom:6px;">✓ Valid hospital licence from State Medical Council</li>
+        <li style="font-size:13px;color:var(--slate);margin-bottom:6px;">✓ Registered transplant team (surgeons & coordinators)</li>
+        <li style="font-size:13px;color:var(--slate);margin-bottom:6px;">✓ NABH / JCI accreditation preferred</li>
+        <li style="font-size:13px;color:var(--slate);">✓ State government authorisation letter</li>
+      </ul>
+    </div>
+    <p style="font-size:13px;color:var(--muted);">To begin hospital registration, contact NOTTO directly:</p>
+    <p style="font-size:13px;"><strong>📞</strong> 1800-11-4770 &nbsp;|&nbsp; <strong>✉</strong> notto@mohfw.gov.in</p>
+    <button class="submit-btn" onclick="closeModal('hospitalModal')">Close</button>
+  </div>
+</div>
+
+<!-- REGISTRY MODAL -->
+<div class="modal-overlay" id="registryModal">
+  <div class="modal" style="max-width:520px;text-align:left;">
+    <button class="modal-close" onclick="closeModal('registryModal')">✕</button>
+    <span class="success-ico" style="font-size:40px;">📊</span>
+    <h3 style="text-align:center;">Transplant Registry</h3>
+    <p>The National Transplant Registry tracks all organ donations and transplants across India. Real-time data as of 2024:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;">
+      <div style="background:var(--rose-light);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;color:var(--rose);font-family:'Playfair Display',serif;">18,900+</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Transplants in 2024</div>
+      </div>
+      <div style="background:var(--green-light);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif;">1,068</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Deceased Donors</div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif;">7M+</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Pledges Registered</div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif;">3rd</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Global Rank</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);">Data sourced from NOTTO Annual Report 2024. For full registry access, contact notto@mohfw.gov.in</p>
+    <button class="submit-btn" onclick="closeModal('registryModal')">Close</button>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal" style="max-width:500px;text-align:left;">
+    <button class="modal-close" onclick="closeModal('contactModal')">✕</button>
+    <span class="success-ico" style="font-size:40px;">📞</span>
+    <h3 style="text-align:center;">Contact NOTTO</h3>
+    <div style="display:flex;flex-direction:column;gap:14px;margin:10px 0;">
+      <div style="background:var(--bg);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:22px;">📍</span>
+        <div><p style="font-weight:600;color:var(--navy);font-size:13px;margin:0 0 4px;">Address</p><p style="font-size:13px;color:var(--muted);margin:0;">AIIMS, Ansari Nagar, New Delhi – 110029</p></div>
+      </div>
+      <div style="background:var(--rose-light);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:22px;">📞</span>
+        <div><p style="font-weight:600;color:var(--rose-dark);font-size:13px;margin:0 0 4px;">Toll-Free Helpline (24×7)</p><p style="font-size:16px;font-weight:700;color:var(--rose);margin:0;">1800-11-4770</p></div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:22px;">✉</span>
+        <div><p style="font-weight:600;color:var(--navy);font-size:13px;margin:0 0 4px;">Email</p><p style="font-size:13px;color:var(--muted);margin:0;">notto@mohfw.gov.in</p></div>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="closeModal('contactModal')">Close</button>
+  </div>
+</div>
+
+<!-- WAITLIST MODAL -->
+<div class="modal-overlay" id="waitlistModal">
+  <div class="modal" style="max-width:500px;text-align:left;">
+    <button class="modal-close" onclick="closeModal('waitlistModal')">✕</button>
+    <span class="success-ico" style="font-size:40px;">📋</span>
+    <h3 style="text-align:center;">Recipient Waitlist</h3>
+    <p>The NOTTO waitlist manages patients awaiting organ transplants across India. Currently over <strong>5 lakh patients</strong> are waiting for a life-saving organ.</p>
+    <div style="background:var(--bg);border-radius:10px;padding:16px;margin:12px 0;">
+      <p style="font-weight:600;color:var(--navy);font-size:13px;margin-bottom:10px;">To Register as a Recipient:</p>
+      <ul style="list-style:none;padding:0;">
+        <li style="font-size:13px;color:var(--slate);margin-bottom:6px;">1. Contact a registered transplant hospital in your state</li>
+        <li style="font-size:13px;color:var(--slate);margin-bottom:6px;">2. Get a referral letter from your treating physician</li>
+        <li style="font-size:13px;color:var(--slate);margin-bottom:6px;">3. Hospital submits your details to ROTTO/SOTTO</li>
+        <li style="font-size:13px;color:var(--slate);">4. You are added to the State & National waitlist</li>
+      </ul>
+    </div>
+    <p style="font-size:13px;color:var(--muted);">For assistance: <strong>1800-11-4770</strong> (Toll Free)</p>
+    <button class="submit-btn" onclick="closeModal('waitlistModal')">Close</button>
+  </div>
+</div>
+
+<!-- BRAIN DEATH MODAL -->
+<div class="modal-overlay" id="brainDeathModal">
+  <div class="modal" style="max-width:500px;text-align:left;">
+    <button class="modal-close" onclick="closeModal('brainDeathModal')">✕</button>
+    <span class="success-ico" style="font-size:40px;">🚨</span>
+    <h3 style="text-align:center;">Report Brain Death</h3>
+    <p style="color:var(--rose);font-weight:600;">This is for hospital staff and medical professionals only.</p>
+    <p>If a patient has been declared brain dead by a Medical Board, the hospital is required by law (THOTA 1994) to notify the regional organ sharing network immediately.</p>
+    <div style="background:#fdf2f3;border-left:3px solid var(--rose);border-radius:0 8px 8px 0;padding:14px;margin:12px 0;">
+      <p style="font-weight:700;color:var(--rose-dark);font-size:13px;margin:0 0 6px;">Immediate Steps:</p>
+      <p style="font-size:13px;color:var(--slate);margin:0;">1. Notify your State SOTTO immediately<br>2. Call NOTTO Helpline: <strong>1800-11-4770</strong><br>3. Maintain donor on ventilator support</p>
+    </div>
+    <p style="font-size:12px;color:var(--muted);">Brain death certification requires certification by a 4-member Medical Board including a neurologist.</p>
+    <button class="submit-btn" onclick="closeModal('brainDeathModal')">Close</button>
+  </div>
+</div>
+
+<!-- DONOR CARD PRINT WINDOW TEMPLATE (hidden) -->
+<div id="donorCardTemplate" style="display:none;"></div>
+
+<script>
+  // ── GLOBAL STATE ──
+  let registeredDonor = null;
+
+  // ── MODAL HELPERS ──
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close modal on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  // ── BLOOD GROUP SELECTION ──
+  function selectBlood(btn) {
+    document.querySelectorAll('.blood-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  // ── TOGGLE ALL ORGANS ──
+  function toggleAllOrgans(allBox) {
+    document.querySelectorAll('.org-individual').forEach(cb => {
+      cb.checked = allBox.checked;
+    });
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.org-individual').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const all = document.querySelectorAll('.org-individual');
+        const allChecked = [...all].every(c => c.checked);
+        document.getElementById('orgAll').checked = allChecked;
+      });
+    });
+  });
+
+  // ── FORMAT AADHAAR ──
+  document.addEventListener('DOMContentLoaded', () => {
+    const aadhaarInput = document.getElementById('aadhaar');
+    if (aadhaarInput) {
+      aadhaarInput.addEventListener('input', function () {
+        let val = this.value.replace(/\D/g, '').substring(0, 12);
+        let formatted = val.replace(/(\d{4})(?=\d)/g, '$1-');
+        this.value = formatted;
+      });
+    }
+  });
+
+  // ── FORM VALIDATION & SUBMISSION ──
+  function submitPledge() {
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const dob       = document.getElementById('dob').value;
+    const gender    = document.getElementById('gender').value;
+    const aadhaar   = document.getElementById('aadhaar').value.trim();
+    const mobile    = document.getElementById('mobile').value.trim();
+    const state     = document.getElementById('state').value;
+    const consent   = document.getElementById('consentBox').checked;
+    const bloodBtn  = document.querySelector('.blood-btn.selected');
+    const errorDiv  = document.getElementById('formError');
+
+    const organs = [...document.querySelectorAll('.org-individual:checked')].map(c => c.value);
+
+    // Validate
+    const errors = [];
+    if (!firstName) errors.push('First Name is required.');
+    if (!lastName)  errors.push('Last Name is required.');
+    if (!dob)       errors.push('Date of Birth is required.');
+    if (!gender)    errors.push('Gender is required.');
+    if (!bloodBtn)  errors.push('Please select a Blood Group.');
+    if (!aadhaar || aadhaar.replace(/-/g,'').length !== 12) errors.push('Valid 12-digit Aadhaar number is required.');
+    if (!mobile || mobile.replace(/\D/g,'').length < 10) errors.push('Valid Mobile Number is required (min 10 digits).');
+    if (!state)     errors.push('State is required.');
+    if (organs.length === 0) errors.push('Please select at least one organ to donate.');
+    if (!consent)   errors.push('Please provide consent to proceed.');
+
+    if (errors.length > 0) {
+      errorDiv.style.display = 'block';
+      errorDiv.innerHTML = '⚠ ' + errors.join('<br>⚠ ');
+      errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    errorDiv.style.display = 'none';
+
+    const pledgeId = Math.floor(100000 + Math.random() * 900000);
+    const dobObj = new Date(dob);
+    const age = Math.floor((new Date() - dobObj) / (365.25 * 24 * 60 * 60 * 1000));
+
+    registeredDonor = {
+      firstName, lastName, dob, age, gender,
+      blood: bloodBtn.textContent,
+      aadhaar, mobile,
+      email: document.getElementById('email').value.trim(),
+      state, organs,
+      pledgeId,
+      pledgeDate: new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' })
+    };
+
+    // Persist to localStorage so data survives page reloads
+    const key = 'NOTTO-2025-' + pledgeId;
+    const allDonors = JSON.parse(localStorage.getItem('nottoRegistry') || '{}');
+    allDonors[key] = registeredDonor;
+    localStorage.setItem('nottoRegistry', JSON.stringify(allDonors));
+
+    document.getElementById('pledgeId').textContent = pledgeId;
+    document.getElementById('successName').textContent = firstName + ' ' + lastName;
+    openModal('successModal');
+  }
+
+  // ── DONOR CARD GENERATION ──
+  function generateCardHTML(donor) {
+    const orgList = donor.organs.join(' · ');
+    return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Donor Card – ${donor.firstName} ${donor.lastName}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  @page { margin: 1cm; size: A5 landscape; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e8eaf0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; margin: 0; padding: 32px 20px;
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px; color: #4a5578; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 18px; text-align: center;
+  }
+  .card-wrap {
+    width: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(26,35,64,0.35), 0 4px 16px rgba(232,68,77,0.15);
+  }
+  /* TOP HALF — dark navy */
+  .card-top {
+    background: #1a2340;
+    padding: 26px 28px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top::before {
+    content: '';
+    position: absolute; top: -50px; right: -50px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: #e8444d;
+    opacity: 0.12;
+  }
+  .card-top::after {
+    content: '';
+    position: absolute; bottom: -30px; left: 40px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: #e8444d;
+    opacity: 0.07;
+  }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; position: relative; z-index: 1; }
+  .card-logo {
+    width: 36px; height: 36px;
+    background: #e8444d;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .card-brand { font-family: 'Playfair Display', serif; font-size: 17px; color: #ffffff; font-weight: 700; }
+  .card-brand span { color: #f9a8ad; }
+  .card-badge {
+    margin-left: auto;
+    background: #e8444d;
+    color: #fff; font-size: 8px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+  }
+  .donor-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700; color: #ffffff;
+    margin-bottom: 6px; position: relative; z-index: 1;
+  }
+  .blood-pill {
+    display: inline-block;
+    background: #e8444d;
+    color: #ffffff; font-size: 13px; font-weight: 700;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .meta-row { display: flex; gap: 20px; position: relative; z-index: 1; }
+  .meta-item {}
+  .meta-lbl { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: #6a7fa0; margin-bottom: 2px; }
+  .meta-val { font-size: 12px; font-weight: 600; color: #ffffff; }
+
+  /* BOTTOM HALF — slightly lighter navy */
+  .card-bottom {
+    background: #202d4a;
+    padding: 18px 28px 22px;
+    position: relative;
+  }
+  .organs-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #6a7fa0; margin-bottom: 8px; }
+  .organs-list {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;
+  }
+  .organ-tag {
+    background: #2a3a5e;
+    color: #c8d8f0; font-size: 10px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+    border: 1px solid #3a4e72;
+  }
+  .card-footer { display: flex; justify-content: space-between; align-items: flex-end; }
+  .pledge-info {}
+  .pledge-num { font-size: 9px; color: #6a7fa0; margin-bottom: 2px; }
+  .pledge-date { font-size: 9px; color: #6a7fa0; }
+  .hotline-box { text-align: right; }
+  .hotline-lbl { font-size: 8px; color: #6a7fa0; margin-bottom: 2px; }
+  .hotline-num { font-size: 14px; font-weight: 700; color: #f9a8ad; }
+  .hotline-sub { font-size: 8px; color: #6a7fa0; }
+
+  /* divider stripe */
+  .stripe { height: 3px; background: #e8444d; }
+
+  /* Govt bar */
+  .govt-bar {
+    background: #141b2e;
+    padding: 10px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .govt-bar .g-left { font-size: 9px; color: #3a4e72; }
+  .govt-bar .g-right { font-size: 9px; color: #3a4e72; text-align: right; }
+
+  /* Print button */
+  .print-actions { margin-top: 24px; display: flex; gap: 12px; }
+  .print-btn {
+    padding: 12px 28px; background: #e8444d; color: #fff;
+    border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 16px rgba(232,68,77,0.3);
+  }
+  .print-btn:hover { background: #b8333b; }
+  .save-btn {
+    padding: 12px 28px; background: #1a2340; color: #8da0c0;
+    border: 1.5px solid #2a3556; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .hint { margin-top: 12px; font-size: 11px; color: #8a96aa; text-align: center; }
+  @media print {
+    .print-actions, .page-title, .hint { display: none !important; }
+    body { background: white !important; padding: 0 !important; justify-content: flex-start; }
+    .card-wrap { box-shadow: none; width: 100%; max-width: 500px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-title">🇮🇳 National Organ Donor Registry · NOTTO</div>
+<div class="card-wrap">
+  <!-- TOP -->
+  <div class="card-top">
+    <div class="card-header">
+      <div class="card-logo">🫀</div>
+      <div class="card-brand">Give a <span>Life</span></div>
+      <div class="card-badge">Official Donor Card</div>
+    </div>
+    <div class="donor-name">${donor.firstName} ${donor.lastName}</div>
+    <div class="blood-pill">Blood Group: ${donor.blood}</div>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="meta-lbl">Date of Birth</div>
+        <div class="meta-val">${new Date(donor.dob).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-lbl">Gender</div>
+        <div class="meta-val">${donor.gender}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-lbl">State</div>
+        <div class="meta-val">${donor.state}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-lbl">Mobile</div>
+        <div class="meta-val">${donor.mobile || '—'}</div>
+      </div>
+    </div>
+  </div>
+  <div class="stripe"></div>
+  <!-- BOTTOM -->
+  <div class="card-bottom">
+    <div class="organs-label">Pledged Organs &amp; Tissues</div>
+    <div class="organs-list">
+      ${donor.organs.map(o => `<span class="organ-tag">${o}</span>`).join('')}
+    </div>
+    <div class="card-footer">
+      <div class="pledge-info">
+        <div class="pledge-num">Pledge ID: NOTTO-2025-${donor.pledgeId}</div>
+        <div class="pledge-date">Registered: ${donor.pledgeDate}</div>
+      </div>
+      <div class="hotline-box">
+        <div class="hotline-lbl">24×7 Helpline</div>
+        <div class="hotline-num">1800-11-4770</div>
+        <div class="hotline-sub">Toll Free</div>
+      </div>
+    </div>
+  </div>
+  <!-- GOVT BAR -->
+  <div class="govt-bar">
+    <div class="g-left">Ministry of Health &amp; Family Welfare · Govt. of India</div>
+    <div class="g-right">DGHS · NOTTO · THOTA 1994</div>
+  </div>
+</div>
+<div class="print-actions">
+  <button class="print-btn" onclick="window.print()">🖨 Print Donor Card</button>
+  <button class="save-btn" onclick="window.close()">✕ Close</button>
+</div>
+<p class="hint">To save as PDF: Click Print → Change destination to "Save as PDF"</p>
+</body>
+</html>`;
+  }
+
+  function downloadDonorCard() {
+    if (!registeredDonor) { closeModal('successModal'); return; }
+    const html = generateCardHTML(registeredDonor);
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if (!win) {
+      // fallback: download as file
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `DonorCard-NOTTO-${registeredDonor.pledgeId}.html`;
+      a.click();
+    }
+    closeModal('successModal');
+  }
+
+  // ── DOWNLOAD CARD FOR EXISTING USERS ──
+  function openDonorCardDownload() {
+    if (registeredDonor) {
+      // Already registered in this session — download directly
+      downloadDonorCard();
+    } else {
+      openModal('downloadCardModal');
+    }
+  }
+
+  function lookupAndDownload() {
+    const rawInput = document.getElementById('lookupPledgeId').value.trim();
+    const input = rawInput.toUpperCase();
+    const errDiv = document.getElementById('lookupError');
+    if (!input) {
+      errDiv.style.display = 'block';
+      errDiv.textContent = 'Please enter your Pledge ID.';
+      return;
+    }
+    const match = input.match(/NOTTO-\d{4}-(\d+)/i);
+    if (!match) {
+      errDiv.style.display = 'block';
+      errDiv.textContent = 'Invalid format. Please enter the full Pledge ID (e.g. NOTTO-2025-123456).';
+      return;
+    }
+    errDiv.style.display = 'none';
+    // Look up donor in localStorage registry
+    const allDonors = JSON.parse(localStorage.getItem('nottoRegistry') || '{}');
+    const donor = allDonors[input];
+    if (!donor) {
+      // Not found — show recovery form so user can re-enter their details
+      document.getElementById('recoveryPledgeIdDisplay').textContent = input;
+      document.getElementById('lookupStep1').style.display = 'none';
+      document.getElementById('lookupStep2').style.display = '';
+      return;
+    }
+    // Found — generate and open card directly
+    openCardWindow(donor, input);
+    closeModal('downloadCardModal');
+  }
+
+  function restoreAndDownload() {
+    const pledgeIdFull = document.getElementById('recoveryPledgeIdDisplay').textContent.trim();
+    const errDiv = document.getElementById('recoveryError');
+    const firstName = document.getElementById('recFirstName').value.trim();
+    const lastName  = document.getElementById('recLastName').value.trim();
+    const dob       = document.getElementById('recDob').value;
+    const gender    = document.getElementById('recGender').value;
+    const blood     = document.getElementById('recBlood').value;
+    const state     = document.getElementById('recState').value;
+    const mobile    = document.getElementById('recMobile').value.trim();
+    const organs    = [...document.querySelectorAll('.rec-organ:checked')].map(c => c.value);
+
+    const errors = [];
+    if (!firstName) errors.push('First Name is required.');
+    if (!lastName)  errors.push('Last Name is required.');
+    if (!dob)       errors.push('Date of Birth is required.');
+    if (!gender)    errors.push('Gender is required.');
+    if (!blood)     errors.push('Blood Group is required.');
+    if (!state)     errors.push('State is required.');
+    if (!mobile || mobile.replace(/\D/g,'').length < 10) errors.push('Valid Mobile Number is required.');
+    if (organs.length === 0) errors.push('Please select at least one organ.');
+
+    if (errors.length > 0) {
+      errDiv.style.display = 'block';
+      errDiv.innerHTML = '⚠ ' + errors.join('<br>⚠ ');
+      return;
+    }
+    errDiv.style.display = 'none';
+
+    const pledgeNum = pledgeIdFull.split('-')[2];
+    const dobObj = new Date(dob);
+    const age = Math.floor((new Date() - dobObj) / (365.25 * 24 * 60 * 60 * 1000));
+    const donor = {
+      firstName, lastName, dob, age, gender, blood, mobile,
+      email: '', state, organs,
+      pledgeId: pledgeNum,
+      pledgeDate: new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' })
+    };
+
+    // Save to localStorage for future lookups
+    const allDonors = JSON.parse(localStorage.getItem('nottoRegistry') || '{}');
+    allDonors[pledgeIdFull] = donor;
+    localStorage.setItem('nottoRegistry', JSON.stringify(allDonors));
+
+    openCardWindow(donor, pledgeIdFull);
+    closeModal('downloadCardModal');
+    // Reset modal back to step 1 for next time
+    document.getElementById('lookupStep1').style.display = '';
+    document.getElementById('lookupStep2').style.display = 'none';
+  }
+
+  function openCardWindow(donor, pledgeIdFull) {
+    const cardHtml = generateCardHTML(donor);
+    const blob = new Blob([cardHtml], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if (!win) {
+      const a = document.createElement('a');
+      a.href = url; a.download = 'DonorCard-' + pledgeIdFull + '.html'; a.click();
+    }
+  }
+</script>
+</body>
+</html>
